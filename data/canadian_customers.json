@@ -1,0 +1,105 @@
+{
+    "canadian_customers": [
+      {
+        "customer_id": "CUST001",
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "john.doe@example.com",
+        "street": "123 Main Street",
+        "city": "Toronto",
+        "province": "Ontario",
+        "postal_code": "M5A 1A1"
+      },
+      {
+        "customer_id": "CUST002",
+        "first_name": "Jane",
+        "last_name": "Smith",
+        "email": "jane.smith@example.com",
+        "street": "456 Oak Avenue",
+        "city": "Vancouver",
+        "province": "British Columbia",
+        "postal_code": "V6B 2E8"
+      },
+      {
+        "customer_id": "CUST003",
+        "first_name": "Michael",
+        "last_name": "Chen",
+        "email": "michael.chen@example.com",
+        "street": "789 Pine Lane",
+        "city": "Montreal",
+        "province": "Quebec",
+        "postal_code": "H2X 1Y6"
+      },
+      {
+        "customer_id": "CUST004",
+        "first_name": "Emily",
+        "last_name": "Nguyen",
+        "email": "emily.nguyen@example.com",
+        "street": "101 Elm Street",
+        "city": "Calgary",
+        "province": "Alberta",
+        "postal_code": "T2P 1J9"
+      },
+      {
+        "customer_id": "CUST005",
+        "first_name": "David",
+        "last_name": "Wang",
+        "email": "david.wang@example.com",
+        "street": "321 Maple Road",
+        "city": "Halifax",
+        "province": "Nova Scotia",
+        "postal_code": "B3H 1M5"
+      },
+      {
+        "customer_id": "CUST006",
+        "first_name": "Samantha",
+        "last_name": "Lee",
+        "email": "samantha.lee@example.com",
+        "street": "567 Birch Street",
+        "city": "Edmonton",
+        "province": "Alberta",
+        "postal_code": "T5J 2B4"
+      },
+      {
+        "customer_id": "CUST007",
+        "first_name": "Daniel",
+        "last_name": "Garcia",
+        "email": "daniel.garcia@example.com",
+        "street": "876 Cedar Avenue",
+        "city": "Winnipeg",
+        "province": "Manitoba",
+        "postal_code": "R3C 0A6"
+      },
+      {
+        "customer_id": "CUST008",
+        "first_name": "Olivia",
+        "last_name": "Martin",
+        "email": "olivia.martin@example.com",
+        "street": "234 Elmwood Drive",
+        "city": "Quebec City",
+        "province": "Quebec",
+        "postal_code": "G1V 0A6"
+      },
+      {
+        "customer_id": "CUST009",
+        "first_name": "Ethan",
+        "last_name": "Liu",
+        "email": "ethan.liu@example.com",
+        "street": "789 Oakwood Lane",
+        "city": "Surrey",
+        "province": "British Columbia",
+        "postal_code": "V3T 2K3"
+      },
+      {
+        "customer_id": "CUST010",
+        "first_name": "Isabella",
+        "last_name": "Anderson",
+        "email": "isabella.anderson@example.com",
+        "street": "345 Maple Avenue",
+        "city": "St. John's",
+        "province": "Newfoundland and Labrador",
+        "postal_code": "A1A 1A1"
+      }
+    ]
+  }
+  

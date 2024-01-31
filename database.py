@@ -5,8 +5,20 @@ from sqlalchemy import create_engine, Column, Integer, String, DateTime, MetaDat
 # from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, declarative_base
 import datetime
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 Base = declarative_base()
+
+username = os.getenv('PG_USERNAME')
+password = os.getenv('PG_PASSWORD')
+
+database_name = 'SalesData'
+engine = create_engine(f'postgresql://{username}:{password}@localhost:5432/{database_name}')
+Base.metadata.create_all(engine)
+session = sessionmaker(bind=engine)
 
 class Transaction(Base):
     __tablename__ = 'transactions'
@@ -47,15 +59,16 @@ class TaxRate(Base):
 class Customer(Base):
     __tablename__ = 'customer'
     id = Column(Integer, primary_key=True)
-    name = Column(String, unique=False)
+    first_name = Column(String, unique=False)
+    last_name = Column(String, unique=False)
     email = Column(String, unique=False)
+    street = Column(String, unique=False)
+    city = Column(String, unique=False)
+    province = Column(String, unique=False)
+    postal_code = Column(String, unique=False)
+    
 
-username = 'postgres'
-password = 'sqlpassword'
-database_name = 'SalesData'
-engine = create_engine(f'postgresql://{username}:{password}@localhost:5432/{database_name}')
-Base.metadata.create_all(engine)
-session = sessionmaker(bind=engine)
+
 
 # all_transactions = session.query(Transaction).all()
 
