@@ -1,0 +1,25 @@
+{
+    "inventory": [
+      {"product": "Apples", "quantity": 100, "price": 2.50},
+      {"product": "Bananas", "quantity": 50, "price": 1.20},
+      {"product": "Milk (1 gallon)", "quantity": 20, "price": 3.50},
+      {"product": "Bread (whole wheat)", "quantity": 30, "price": 2.00},
+      {"product": "Eggs (dozen)", "quantity": 40, "price": 1.80},
+      {"product": "Chicken (1 lb)", "quantity": 15, "price": 4.50},
+      {"product": "Tomatoes", "quantity": 25, "price": 1.75},
+      {"product": "Potatoes (5 lbs)", "quantity": 30, "price": 2.50},
+      {"product": "Pasta (1 lb)", "quantity": 40, "price": 1.00},
+      {"product": "Rice (2 lbs)", "quantity": 20, "price": 2.20},
+      {"product": "Canned Soup", "quantity": 30, "price": 1.50},
+      {"product": "Cheese (8 oz)", "quantity": 20, "price": 3.00},
+      {"product": "Ground Beef (1 lb)", "quantity": 15, "price": 5.00},
+      {"product": "Spinach (1 bunch)", "quantity": 20, "price": 1.80},
+      {"product": "Oranges", "quantity": 35, "price": 3.00},
+      {"product": "Cereal", "quantity": 25, "price": 3.50},
+      {"product": "Coffee (12 oz)", "quantity": 20, "price": 5.50},
+      {"product": "Butter (1 lb)", "quantity": 15, "price": 2.75},
+      {"product": "Onions (1 lb)", "quantity": 30, "price": 1.50},
+      {"product": "Salmon (1 lb)", "quantity": 10, "price": 8.00}
+    ]
+  }
+  

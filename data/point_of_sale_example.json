@@ -1,0 +1,35 @@
+{
+    "transactionId": "123456789",
+    "timestamp": "2024-01-30T12:34:56Z",
+    "customer": {
+      "customerId": "CUST123",
+      "name": "John Doe",
+      "email": "john.doe@example.com"
+    },
+    "items": [
+      {
+        "productId": "PROD001",
+        "productName": "Product A",
+        "quantity": 2,
+        "unitPrice": 19.99,
+        "totalPrice": 39.98
+      },
+      {
+        "productId": "PROD002",
+        "productName": "Product B",
+        "quantity": 1,
+        "unitPrice": 29.99,
+        "totalPrice": 29.99
+      }
+    ],
+    "subtotal": 69.97,
+    "tax": 5.60,
+    "total": 75.57,
+    "paymentMethod": "Credit Card",
+    "paymentStatus": "Approved",
+    "location": {
+      "storeId": "STORE123",
+      "storeName": "ABC Mart",
+      "city": "Cityville"
+    }
+  }  

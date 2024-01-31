@@ -1,0 +1,24 @@
+{
+    "grocery_list": [
+      {"item": "Apples", "price": 2.50},
+      {"item": "Bananas", "price": 1.20},
+      {"item": "Milk (1 gallon)", "price": 3.50},
+      {"item": "Bread (whole wheat)", "price": 2.00},
+      {"item": "Eggs (dozen)", "price": 1.80},
+      {"item": "Chicken (1 lb)", "price": 4.50},
+      {"item": "Tomatoes", "price": 1.75},
+      {"item": "Potatoes (5 lbs)", "price": 2.50},
+      {"item": "Pasta (1 lb)", "price": 1.00},
+      {"item": "Rice (2 lbs)", "price": 2.20},
+      {"item": "Canned Soup", "price": 1.50},
+      {"item": "Cheese (8 oz)", "price": 3.00},
+      {"item": "Ground Beef (1 lb)", "price": 5.00},
+      {"item": "Spinach (1 bunch)", "price": 1.80},
+      {"item": "Oranges", "price": 3.00},
+      {"item": "Cereal", "price": 3.50},
+      {"item": "Coffee (12 oz)", "price": 5.50},
+      {"item": "Butter (1 lb)", "price": 2.75},
+      {"item": "Onions (1 lb)", "price": 1.50},
+      {"item": "Salmon (1 lb)", "price": 8.00}
+    ]
+  }  

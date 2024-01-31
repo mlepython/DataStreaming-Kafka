@@ -1,0 +1,9 @@
+{
+    "payment_options": [
+      {"type": "Credit Card", "description": "Pay with your credit card."},
+      {"type": "Debit Card", "description": "Use your debit card for payment."},
+      {"type": "Cash", "description": "Pay with cash at the checkout."},
+      {"type": "Mobile Wallet", "description": "Make payment using your mobile wallet."},
+      {"type": "Online Banking", "description": "Transfer funds through online banking."}
+    ]
+  }  
