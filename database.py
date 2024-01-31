@@ -25,7 +25,8 @@ class Transaction(Base):
     id = Column(Integer, primary_key=True)
     transaction_id = Column(String, unique=True)
     timestamp = Column(DateTime, default=datetime.datetime.utcnow)
-    # Add other fields as needed
+    # TODO items, customer info, cost, payment method, store info
+    # these are foreign keys
 
 class Store(Base):
     __tablename__ = 'store'
