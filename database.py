@@ -1,12 +1,13 @@
 # TODO need to create a connection to a database. Mysql, postgress, sqlite, azure, ibm
 # TODO need dimension tables for product, location, customer, date
 # create the dimensions before hand? allow for new values to be inserted into table. this will require a check to see if value already in table
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, MetaData, text, Float
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, MetaData, text, Float, exc
 # from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, declarative_base
 import datetime
 from dotenv import load_dotenv
 import os
+from example_data import *
 
 load_dotenv()
 
@@ -16,9 +17,7 @@ username = os.getenv('PG_USERNAME')
 password = os.getenv('PG_PASSWORD')
 
 database_name = 'SalesData'
-engine = create_engine(f'postgresql://{username}:{password}@localhost:5432/{database_name}')
-Base.metadata.create_all(engine)
-session = sessionmaker(bind=engine)
+
 
 class Transaction(Base):
     __tablename__ = 'transactions'
@@ -27,6 +26,10 @@ class Transaction(Base):
     timestamp = Column(DateTime, default=datetime.datetime.utcnow)
     # TODO items, customer info, cost, payment method, store info
     # these are foreign keys
+    # customer_id
+    # store_id
+    # payment_id
+    # item_id
 
 class Store(Base):
     __tablename__ = 'store'
@@ -54,12 +57,13 @@ class PaymentOptions(Base):
 class TaxRate(Base):
     __tablename__ = "tax_rate"
     id = Column(Integer, primary_key=True)
-    province = Column(String, unique=False)
+    province = Column(String, unique=True)
     rate = Column(Float, unique=False)
 
 class Customer(Base):
     __tablename__ = 'customer'
     id = Column(Integer, primary_key=True)
+    customer_id = Column(String, unique=False)
     first_name = Column(String, unique=False)
     last_name = Column(String, unique=False)
     email = Column(String, unique=False)
@@ -68,13 +72,30 @@ class Customer(Base):
     province = Column(String, unique=False)
     postal_code = Column(String, unique=False)
     
+engine = create_engine(f'postgresql://{username}:{password}@localhost:5432/{database_name}')
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+session = Session()
+
+if __name__=='__main__':
+    try:
+        for province, rate in canadian_tax_rates.items():
+            session.add(TaxRate(province=province, rate=rate))
+        session.commit()
+    except exc.IntegrityError as e:
+        session.rollback()
+        print(f"IntegrityError: {e}")
+    else:
+        print("Successfully added user with unique email.")
+    all_rates = session.query(TaxRate).all()
+    for tax_rate in all_rates:
+        print(f"Province: {tax_rate.province}, Rate: {tax_rate.rate}")
+    
+    # for province, rate in canadian_tax_rates.items():
+    #     session.add(TaxRate(province=province, rate=rate))
+    #     session.commit()
+    # all_rates = session.query(TaxRate).all()
+    # for tax_rate in all_rates:
+    #     print(f"Province: {tax_rate.province}, Rate: {tax_rate.rate}")
 
 
-
-# all_transactions = session.query(Transaction).all()
-
-# with engine.connect() as connection:
-#     result = connection.execute(text("SELECT * FROM actor"))
-
-#     for row in result:
-#         print(f"Transaction ID: {row}")

@@ -1,9 +1,9 @@
 {
-    "store_locations": [
-      {"name": "SuperMart", "address": "123 Main Street", "location": {"city": "Toronto", "province": "Ontario", "postal_code": "M5A 1A1"}},
-      {"name": "FreshGroceries", "address": "456 Oak Avenue", "location": {"city": "Vancouver", "province": "British Columbia", "postal_code": "V6B 2E8"}},
-      {"name": "MegaMart", "address": "789 Pine Lane", "location": {"city": "Montreal", "province": "Quebec", "postal_code": "H2X 1Y6"}},
-      {"name": "Neighborhood Market", "address": "101 Elm Street", "location": {"city": "Calgary", "province": "Alberta", "postal_code": "T2P 1J9"}},
-      {"name": "City Essentials", "address": "321 Maple Road", "location": {"city": "Halifax", "province": "Nova Scotia", "postal_code": "B3H 1M5"}}
-    ]
-  }  
+  "store_locations": [
+    {"name": "SuperMart", "address": "123 Main Street", "city": "Toronto", "province": "Ontario", "postal_code": "M5A 1A1"},
+    {"name": "FreshGroceries", "address": "456 Oak Avenue", "city": "Vancouver", "province": "British Columbia", "postal_code": "V6B 2E8"},
+    {"name": "MegaMart", "address": "789 Pine Lane", "city": "Montreal", "province": "Quebec", "postal_code": "H2X 1Y6"},
+    {"name": "Neighborhood Market", "address": "101 Elm Street", "city": "Calgary", "province": "Alberta", "postal_code": "T2P 1J9"},
+    {"name": "City Essentials", "address": "321 Maple Road", "city": "Halifax", "province": "Nova Scotia", "postal_code": "B3H 1M5"}
+  ]
+}
