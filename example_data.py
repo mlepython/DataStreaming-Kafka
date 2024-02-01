@@ -1,4 +1,5 @@
 import json
+from random import randint
 
 def read_json(file_path):
     with open(file_path, 'r') as file:
@@ -19,4 +20,7 @@ store_locations = store_locations['store_locations']
 
 canadian_tax_rates = read_json('./data/canadian_tax_rates.json')
 canadian_tax_rates = canadian_tax_rates['canadian_tax_rates']
+
+canadian_customers = read_json('./data/canadian_customers.json')
+canadian_customers = canadian_customers['canadian_customers']
 

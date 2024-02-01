@@ -24,16 +24,31 @@ class Transaction(Base):
     id = Column(Integer, primary_key=True)
     transaction_id = Column(String, unique=True)
     timestamp = Column(DateTime, default=datetime.datetime.utcnow)
+    subtotal = Column(Float, unique=False)
+    tax = Column(Float, unique=False)
+    total = Column(Float, unique=False)
     # TODO items, customer info, cost, payment method, store info
     # these are foreign keys
     # customer_id
     # store_id
     # payment_id
-    # item_id
+    # item_id?
+# TODO have a database to handle the items purchased for each transaction?
+class ItemsPurchased(Base):
+    __tablename__ = 'items_purchased'
+    id = Column(Integer, primary_key=True)
+    transaction_id = Column(String, unique=False)
+    item_id = Column(String, unique=False)
+    quantity = Column(Integer, unique=False)
 
+class Date(Base):
+    __tablename__ = 'date'
+    # date dimension table
+    id = Column(Integer, primary_key=True)
 class Store(Base):
     __tablename__ = 'store'
     id = Column(Integer, primary_key=True)
+    store_id = Column(String, unique=False)
     name = Column(String, unique=False)
     address = Column(String, unique=False)
     city = Column(String, unique=False)
@@ -44,6 +59,7 @@ class Store(Base):
 class Inventory(Base):
     __tablename__ = 'inventory'
     id = Column(Integer, primary_key=True)
+    product_id = Column(String, unique=True)
     product = Column(String, unique=False)
     quantity = Column(Integer, unique=False)
     price = Column(Float, unique=False)
@@ -51,6 +67,7 @@ class Inventory(Base):
 class PaymentOptions(Base):
     __tablename__ = 'payment_options'
     id = Column(Integer, primary_key=True)
+    payment_id = Column(String, unique=True)
     type = Column(String, unique=True)
     description = Column(String, unique=False)
 
@@ -78,6 +95,19 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 if __name__=='__main__':
+    try:
+        for province, rate in canadian_tax_rates.items():
+            session.add(TaxRate(province=province, rate=rate))
+        session.commit()
+    except exc.IntegrityError as e:
+        session.rollback()
+        print(f"IntegrityError: {e}")
+    else:
+        print("Successfully added user with unique email.")
+    all_rates = session.query(TaxRate).all()
+    for tax_rate in all_rates:
+        print(f"Province: {tax_rate.province}, Rate: {tax_rate.rate}")
+    
     try:
         for province, rate in canadian_tax_rates.items():
             session.add(TaxRate(province=province, rate=rate))
