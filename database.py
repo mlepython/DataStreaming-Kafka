@@ -32,14 +32,16 @@ class Transaction(Base):
     # customer_id
     # store_id
     # payment_id
+    # date_id
     # item_id?
 # TODO have a database to handle the items purchased for each transaction?
 class ItemsPurchased(Base):
     __tablename__ = 'items_purchased'
     id = Column(Integer, primary_key=True)
     transaction_id = Column(String, unique=False)
-    item_id = Column(String, unique=False)
+    product_id = Column(String, unique=False)
     quantity = Column(Integer, unique=False)
+    price = Column(Float, unique=False)
 
 class Date(Base):
     __tablename__ = 'date'
