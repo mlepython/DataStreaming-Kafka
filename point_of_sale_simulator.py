@@ -79,8 +79,6 @@ def transaction_generator():
 
     print(pos)
     return pos
-    # TODO will need to access the databases for customer, item, payment options, etc...
-
 
 for i in range(10):
     message = transaction_generator()
