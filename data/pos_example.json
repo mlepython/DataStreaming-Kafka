@@ -1,0 +1,43 @@
+{
+    "transaction_id": "02c4bce7-b41a-4bd2-af6f-bbde6a50fa1c",
+    "transaction_date": "2024-02-03 14:24:35",
+    "customer_id": "CUST009",
+    "first_name": "Ethan",
+    "last_name": "Liu",
+    "email": "ethan.liu@example.com",
+    "street": "789 Oakwood Lane",
+    "city": "Surrey",
+    "province": "British Columbia",
+    "postal_code": "V3T 2K3",
+    "items": [
+      {"item": "Salmon (1 lb)", "price": 8.0, "quantity": 3, "total_price": 24.0},
+      {"item": "Onions (1 lb)", "price": 1.5, "quantity": 2, "total_price": 3.0},
+      {"item": "Milk (1 gallon)", "price": 3.5, "quantity": 2, "total_price": 7.0},
+      {"item": "Coffee (12 oz)", "price": 5.5, "quantity": 2, "total_price": 11.0},
+      {"item": "Oranges", "price": 3.0, "quantity": 2, "total_price": 6.0},
+      {"item": "Apples", "price": 2.5, "quantity": 2, "total_price": 5.0},
+      {"item": "Spinach (1 bunch)", "price": 1.8, "quantity": 3, "total_price": 5.4},
+      {"item": "Pasta (1 lb)", "price": 1.0, "quantity": 3, "total_price": 3.0},
+      {"item": "Rice (2 lbs)", "price": 2.2, "quantity": 1, "total_price": 2.2},
+      {"item": "Ground Beef (1 lb)", "price": 5.0, "quantity": 1, "total_price": 5.0},
+      {"item": "Bread (whole wheat)", "price": 2.0, "quantity": 3, "total_price": 6.0},
+      {"item": "Cereal", "price": 3.5, "quantity": 1, "total_price": 3.5},
+      {"item": "Canned Soup", "price": 1.5, "quantity": 1, "total_price": 1.5},
+      {"item": "Potatoes (5 lbs)", "price": 2.5, "quantity": 3, "total_price": 7.5},
+      {"item": "Tomatoes", "price": 1.75, "quantity": 3, "total_price": 5.25},
+      {"item": "Cheese (8 oz)", "price": 3.0, "quantity": 3, "total_price": 9.0}
+    ],
+    "subtotal": 104.35,
+    "tax": 12.52,
+    "total": 116.87,
+    "payment_type": "Cash",
+    "location": {
+      "store_id": "STORE002",
+      "name": "FreshGroceries",
+      "address": "456 Oak Avenue",
+      "city": "Vancouver",
+      "province": "British Columbia",
+      "postal_code": "V6B 2E8"
+    }
+  }
+  

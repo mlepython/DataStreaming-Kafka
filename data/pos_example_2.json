@@ -1,0 +1,141 @@
+{
+    "transaction_id": "dff420ec-248a-4659-aaf2-ba6a4229bb73",
+    "transaction_date": "2024-02-03 17:24:13",
+    "customer_id": "CUST001",
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john.doe@example.com",
+    "street": "123 Main Street",
+    "city": "Toronto",
+    "province": "Ontario",
+    "postal_code": "M5A 1A1",
+    "items": [
+      {
+        "item": "Ground Beef (1 lb)",
+        "price": 5.0,
+        "quantity": 2,
+        "total_price": 10.0
+      },
+      {
+        "item": "Onions (1 lb)",
+        "price": 1.5,
+        "quantity": 3,
+        "total_price": 4.5
+      },
+      {
+        "item": "Cheese (8 oz)",
+        "price": 3.0,
+        "quantity": 3,
+        "total_price": 9.0
+      },
+      {
+        "item": "Eggs (dozen)",
+        "price": 1.8,
+        "quantity": 1,
+        "total_price": 1.8
+      },
+      {
+        "item": "Chicken (1 lb)",
+        "price": 4.5,
+        "quantity": 3,
+        "total_price": 13.5
+      },
+      {
+        "item": "Spinach (1 bunch)",
+        "price": 1.8,
+        "quantity": 3,
+        "total_price": 5.4
+      },
+      {
+        "item": "Oranges",
+        "price": 3.0,
+        "quantity": 1,
+        "total_price": 3.0
+      },
+      {
+        "item": "Apples",
+        "price": 2.5,
+        "quantity": 2,
+        "total_price": 5.0
+      },
+      {
+        "item": "Bananas",
+        "price": 1.2,
+        "quantity": 2,
+        "total_price": 2.4
+      },
+      {
+        "item": "Milk (1 gallon)",
+        "price": 3.5,
+        "quantity": 1,
+        "total_price": 3.5
+      },
+      {
+        "item": "Bread (whole wheat)",
+        "price": 2.0,
+        "quantity": 2,
+        "total_price": 4.0
+      },
+      {
+        "item": "Canned Soup",
+        "price": 1.5,
+        "quantity": 2,
+        "total_price": 3.0
+      },
+      {
+        "item": "Cereal",
+        "price": 3.5,
+        "quantity": 1,
+        "total_price": 3.5
+      },
+      {
+        "item": "Pasta (1 lb)",
+        "price": 1.0,
+        "quantity": 3,
+        "total_price": 3.0
+      },
+      {
+        "item": "Tomatoes",
+        "price": 1.75,
+        "quantity": 1,
+        "total_price": 1.75
+      },
+      {
+        "item": "Coffee (12 oz)",
+        "price": 5.5,
+        "quantity": 1,
+        "total_price": 5.5
+      },
+      {
+        "item": "Salmon (1 lb)",
+        "price": 8.0,
+        "quantity": 2,
+        "total_price": 16.0
+      },
+      {
+        "item": "Butter (1 lb)",
+        "price": 2.75,
+        "quantity": 2,
+        "total_price": 5.5
+      },
+      {
+        "item": "Potatoes (5 lbs)",
+        "price": 2.5,
+        "quantity": 2,
+        "total_price": 5.0
+      }
+    ],
+    "subtotal": 105.35,
+    "tax": 12.64,
+    "total": 117.99,
+    "payment_type": "Cash",
+    "location": {
+      "store_id": "STORE002",
+      "name": "FreshGroceries",
+      "address": "456 Oak Avenue",
+      "city": "Vancouver",
+      "province": "British Columbia",
+      "postal_code": "V6B 2E8"
+    }
+  }
+  

@@ -24,3 +24,6 @@ canadian_tax_rates = canadian_tax_rates['canadian_tax_rates']
 canadian_customers = read_json('./data/canadian_customers.json')
 canadian_customers = canadian_customers['canadian_customers']
 
+pos_example = read_json('./data/pos_example.json')
+pos_example_2 = read_json('./data/pos_example_2.json')
+

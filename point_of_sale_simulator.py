@@ -34,9 +34,9 @@ def product_id_generator():
 
 def transaction_generator():
     # generate a random id for transaction id
-    transaction_id = uuid.uuid4()
+    transaction_id = str(uuid.uuid4())
     # get the current date and time for transaction date
-    transaction_date = datetime.datetime.utcnow()
+    transaction_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     # randomly select items, payment type, store, and customer id for a given transaction
     items_purchased = random.sample(items, k=random.randint(3,NUM_ITEMS))
@@ -80,7 +80,7 @@ def transaction_generator():
     print(pos)
     return pos
 
-for i in range(10):
+for i in range(1):
     message = transaction_generator()
     # producer.send(TOPIC, message)
     time.sleep(random.random()*2)
