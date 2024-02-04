@@ -200,11 +200,11 @@ if __name__=='__main__':
     insert_values_into_database(table=Store, data=store_locations, feature='store_id')
 
     
-    # update_transaction_table(data=pos_example)
-    update_date_table(data=pos_example)
+    update_transaction_table(data=pos_example_3)
+    update_date_table(data=pos_example_3)
     
     # update_transaction_table(data=pos_example_2)
-    update_date_table(data=pos_example_2)
+    # update_date_table(data=pos_example_2)
     # result = session.query(Transaction).options(joinedload(Transaction.customer)).first()
     # for attr, value in result.__dict__.items():
     #     print(f"{attr}: {value}")

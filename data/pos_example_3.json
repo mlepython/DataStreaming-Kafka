@@ -1,0 +1,38 @@
+{
+    "transaction_id": "7622e88f-0713-45f2-8917-c759e16b9529",
+    "transaction_date": "2023-10-13 15:21:08",
+    "customer_id": "CUST005",
+    "first_name": "David",
+    "last_name": "Wang",
+    "email": "david.wang@example.com",
+    "street": "321 Maple Road",
+    "city": "Halifax",
+    "province": "Nova Scotia",
+    "postal_code": "B3H 1M5",
+    "items": [
+      {"item": "Eggs (dozen)", "price": 1.8, "quantity": 3, "total_price": 5.4},
+      {"item": "Cheese (8 oz)", "price": 3.0, "quantity": 3, "total_price": 9.0},
+      {"item": "Spinach (1 bunch)", "price": 1.8, "quantity": 3, "total_price": 5.4},
+      {"item": "Butter (1 lb)", "price": 2.75, "quantity": 1, "total_price": 2.75},
+      {"item": "Milk (1 gallon)", "price": 3.5, "quantity": 3, "total_price": 10.5},
+      {"item": "Chicken (1 lb)", "price": 4.5, "quantity": 2, "total_price": 9.0},
+      {"item": "Onions (1 lb)", "price": 1.5, "quantity": 2, "total_price": 3.0},
+      {"item": "Potatoes (5 lbs)", "price": 2.5, "quantity": 3, "total_price": 7.5},
+      {"item": "Coffee (12 oz)", "price": 5.5, "quantity": 1, "total_price": 5.5},
+      {"item": "Canned Soup", "price": 1.5, "quantity": 3, "total_price": 4.5},
+      {"item": "Bananas", "price": 1.2, "quantity": 1, "total_price": 1.2}
+    ],
+    "subtotal": 63.75,
+    "tax": 9.55,
+    "total": 73.3,
+    "payment_type": "Credit Card",
+    "location": {
+      "store_id": "STORE003",
+      "name": "MegaMart",
+      "address": "789 Pine Lane",
+      "city": "Montreal",
+      "province": "Quebec",
+      "postal_code": "H2X 1Y6"
+    }
+  }
+  

@@ -26,4 +26,5 @@ canadian_customers = canadian_customers['canadian_customers']
 
 pos_example = read_json('./data/pos_example.json')
 pos_example_2 = read_json('./data/pos_example_2.json')
+pos_example_3 = read_json('./data/pos_example_3.json')
 
