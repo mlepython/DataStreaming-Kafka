@@ -84,7 +84,6 @@ class Store(Base):
 class PaymentOptions(Base):
     __tablename__ = 'payment_options'
     id = Column(Integer, primary_key=True)
-    payment_id = Column(String, unique=True)
     type = Column(String, unique=True)
     description = Column(String, unique=False)
     transaction = relationship('Transaction', back_populates='payment_option')
@@ -109,6 +108,11 @@ class Customer(Base):
     transactions = relationship('Transaction', back_populates='customer')
 
 def update_transaction_table(data):
+    payment_entry = session.query(PaymentOptions).filter_by(type=data['payment_type']).first()
+    if payment_entry:
+        payment_id = payment_entry.id
+    else:
+        payment_id = None
     session.add(Transaction(
             transaction_id=data['transaction_id'],
             timestamp=data['transaction_date'],
@@ -116,7 +120,8 @@ def update_transaction_table(data):
             tax=data['tax'],
             total=data['total'],
             customer_id=data['customer_id'],
-            store_id=data['location']['store_id']
+            store_id=data['location']['store_id'],
+            payment_id=payment_id
         ))
     session.commit()
 
@@ -200,11 +205,11 @@ if __name__=='__main__':
     insert_values_into_database(table=Store, data=store_locations, feature='store_id')
 
     
-    update_transaction_table(data=pos_example_3)
-    update_date_table(data=pos_example_3)
+    # update_transaction_table(data=pos_example_3)
+    # update_date_table(data=pos_example_3)
     
-    # update_transaction_table(data=pos_example_2)
-    # update_date_table(data=pos_example_2)
+    update_transaction_table(data=pos_example_2)
+    update_date_table(data=pos_example_2)
     # result = session.query(Transaction).options(joinedload(Transaction.customer)).first()
     # for attr, value in result.__dict__.items():
     #     print(f"{attr}: {value}")
