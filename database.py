@@ -27,25 +27,20 @@ class Transaction(Base):
     subtotal = Column(Float, unique=False)
     tax = Column(Float, unique=False)
     total = Column(Float, unique=False)
-    # TODO items, customer info, cost, payment method, store info
-    # these are foreign keys
-    # customer_id
-    # store_id
-    # payment_id
-    # date_id
     customer_id = Column(String, ForeignKey('customer.customer_id'))
     customer = relationship('Customer', back_populates='transactions')
     store_id = Column(String, ForeignKey('store.store_id'))
     store = relationship('Store', back_populates='transactions')
     payment_id = Column(Integer, ForeignKey('payment_options.id'))
-    payment_option = relationship('PaymentOptions', back_populates='transactions')
+    payment_option = relationship('PaymentOptions', back_populates='transaction')
     items_purchased = relationship('ItemsPurchased', back_populates='transaction')    
+    date_id = Column(Integer, ForeignKey('date.id'))
+    date = relationship('Date', back_populates='transaction')
 
 class ItemsPurchased(Base):
     __tablename__ = 'items_purchased'
     id = Column(Integer, primary_key=True)
     transaction_id = Column(String, ForeignKey('transactions.transaction_id'))
-
     quantity = Column(Integer, unique=False)
     price = Column(Float, unique=False)
     product_id = Column(String, ForeignKey('inventory.product_id'))
@@ -65,6 +60,15 @@ class Date(Base):
     __tablename__ = 'date'
     # date dimension table
     id = Column(Integer, primary_key=True)
+    day = Column(Integer, unique=False)
+    weekday_name = Column(String, unique=False)
+    weekday = Column(Integer, unique=False)
+    month = Column(Integer, unique=False)
+    month_name = Column(String, unique=False)
+    quarter = Column(Integer, unique=False)
+    quarter_name = Column(String, unique=False)
+    year = Column(Integer, unique=False)
+    transaction = relationship('Transaction', back_populates='date')
 
 class Store(Base):
     __tablename__ = 'store'
@@ -83,7 +87,7 @@ class PaymentOptions(Base):
     payment_id = Column(String, unique=True)
     type = Column(String, unique=True)
     description = Column(String, unique=False)
-    transactions = relationship('Transaction', back_populates='payment_option')
+    transaction = relationship('Transaction', back_populates='payment_option')
 
 class TaxRate(Base):
     __tablename__ = "tax_rate"
@@ -106,16 +110,39 @@ class Customer(Base):
 
 def update_transaction_table(data):
     session.add(Transaction(
-        transaction_id=data['transaction_id'],
-        timestamp=data['transaction_date'],
-        subtotal=data['subtotal'],
-        tax=data['tax'],
-        total=data['total'],
-        customer_id=data['customer_id'],
-        store_id=data['location']['store_id']
+            transaction_id=data['transaction_id'],
+            timestamp=data['transaction_date'],
+            subtotal=data['subtotal'],
+            tax=data['tax'],
+            total=data['total'],
+            customer_id=data['customer_id'],
+            store_id=data['location']['store_id']
+        ))
+    session.commit()
 
+def update_date_table(data):
+    datetime_object = datetime.datetime.strptime(data['transaction_date'], "%Y-%m-%d %H:%M:%S")
+    session.add(Date(
+        day=datetime_object.day,
+        weekday_name= datetime_object.strftime("%A"),
+        weekday=datetime_object.weekday(),
+        month=datetime_object.month,
+        month_name=datetime_object.strftime("%B"),
+        quarter=(datetime_object.month-1) // 3 + 1,
+        quarter_name=f'Q{(datetime_object.month-1) // 3 + 1}',
+        year=datetime_object.year
     ))
     session.commit()
+    # add the date id to the transaction table
+    transaction_entry = session.query(Transaction).filter_by(timestamp=data['transaction_date']).first()
+    date_entry = session.query(Date).filter_by(
+        day=datetime_object.day, month=datetime_object.month, year=datetime_object.year
+    ).first()
+    if transaction_entry and date_entry:
+        transaction_entry.date_id = date_entry.id 
+        session.commit()
+    else:
+        print("record not found")
 
 def updated_items_purchased_table(data):
     for item in data['items']:
@@ -150,11 +177,11 @@ if __name__=='__main__':
         session.rollback()
         print(f"IntegrityError: {e}")
     else:
-
         all_rates = session.query(TaxRate).all()
         for tax_rate in all_rates:
             print(f"Province: {tax_rate.province}, Rate: {tax_rate.rate}")
-    def update_database(table, data: list, feature):
+    
+    def insert_values_into_database(table, data: list, feature):
         try:
             for item in data:
                 session.add(table(
@@ -167,17 +194,23 @@ if __name__=='__main__':
         for item in session.query(table).all():
             print(getattr(item, feature))
 
-    update_database(table=Inventory, data=inventory, feature='product_id')
-    update_database(table=Customer, data=canadian_customers, feature='customer_id')
-    update_database(table=PaymentOptions, data=payment_options, feature='type')
-    update_database(table=Store, data=store_locations, feature='store_id')
+    insert_values_into_database(table=Inventory, data=inventory, feature='product_id')
+    insert_values_into_database(table=Customer, data=canadian_customers, feature='customer_id')
+    insert_values_into_database(table=PaymentOptions, data=payment_options, feature='type')
+    insert_values_into_database(table=Store, data=store_locations, feature='store_id')
+
+    
     # update_transaction_table(data=pos_example)
+    update_date_table(data=pos_example)
+    
     # update_transaction_table(data=pos_example_2)
-    result = session.query(Transaction).options(joinedload(Transaction.customer)).first()
-    for attr, value in result.__dict__.items():
-        print(f"{attr}: {value}")
-    print("\n")
-    updated_items_purchased_table(data=pos_example_2)
+    update_date_table(data=pos_example_2)
+    # result = session.query(Transaction).options(joinedload(Transaction.customer)).first()
+    # for attr, value in result.__dict__.items():
+    #     print(f"{attr}: {value}")
+    # print("\n")
+    # updated_items_purchased_table(data=pos_example_2)
+    
 
 
 

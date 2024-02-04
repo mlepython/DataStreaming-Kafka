@@ -2,7 +2,7 @@ import random
 import json
 import time
 import uuid
-import datetime
+from datetime import datetime, timedelta
 from example_data import *
 from database import engine, TaxRate, session
 # from kafka import KafkaProducer
@@ -32,11 +32,30 @@ def product_id_generator():
     id = f'PROD{randint(0,9)}{randint(0,9)}{randint(0,9)}'
     return id
 
+def generate_random_timestamp():
+    start_date = "2023-01-01 00:00:00"
+    end_date = "2023-12-31 23:59:59"
+
+    # Convert the start and end dates to datetime objects
+    start_datetime = datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S")
+    end_datetime = datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S")
+
+    # Generate a random timedelta within the given range
+    random_timedelta = random.uniform(0, (end_datetime - start_datetime).total_seconds())
+    random_duration = timedelta(seconds=random_timedelta)
+
+    # Add the random duration to the start date to get the random timestamp
+    random_timestamp = start_datetime + random_duration
+
+    return random_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+
+
 def transaction_generator():
     # generate a random id for transaction id
     transaction_id = str(uuid.uuid4())
     # get the current date and time for transaction date
-    transaction_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # transaction_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    transaction_date = generate_random_timestamp()
 
     # randomly select items, payment type, store, and customer id for a given transaction
     items_purchased = random.sample(items, k=random.randint(3,NUM_ITEMS))
