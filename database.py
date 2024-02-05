@@ -16,7 +16,7 @@ Base = declarative_base()
 username = os.getenv('PG_USERNAME')
 password = os.getenv('PG_PASSWORD')
 
-database_name = 'SalesData'
+database_name = 'salesdata'
 
 
 class Transaction(Base):
