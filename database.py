@@ -1,8 +1,7 @@
-# TODO need to create a connection to a database. Mysql, postgress, sqlite, azure, ibm
-# TODO need dimension tables for product, location, customer, date
-# create the dimensions before hand? allow for new values to be inserted into table. this will require a check to see if value already in table
+# TODO create staging database for the consumer stage
+# TODO modify the current databases into a data warehouse labeling tables as Fact and Dim
+# TODO create data mart?
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, MetaData, text, Float, exc, ForeignKey
-# from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship, joinedload
 import datetime
 from dotenv import load_dotenv
@@ -47,6 +46,7 @@ class ItemsPurchased(Base):
     product = relationship('Inventory', back_populates='item_purchased')
     transaction = relationship('Transaction', back_populates='items_purchased')
 
+# TODO need to create an inventory table for each store? or just include the store_id into the table?
 class Inventory(Base):
     __tablename__ = 'inventory'
     id = Column(Integer, primary_key=True)

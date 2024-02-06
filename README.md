@@ -1,103 +1,118 @@
-# Point Of Sale Data Processing System
+# Kafka Consumer and Database Management System
 
 ## Overview
 
-This system consists of several components working together to simulate, process, and store point of sale transactions, as might be seen in a retail environment. It involves a Kafka producer simulating transactions (`point_of_sale_simulator.py`), a Kafka consumer processing those transactions (`consumer.py`), and a database schema and interface (`database.py`) for storing the transaction data persistently. Additionally, it includes support scripts to set up Kafka (`setup_kafka.py`) and to restore a database (`restore_database.py`), as well as helper code that provides sample data (`example_data.py`).
-
-Key functionalities include:
-
-- Simulating point of sale transactions with varying items, quantities, customers, and locations.
-- Consuming messages from a Kafka topic and updating a database accordingly.
-- Mapping and persisting data to PostgreSQL, including handling payment options, tax rates, and customer information.
-- Easy-to-use environment setup via provided setup scripts for both Kafka and the PostgreSQL database.
+This codebase provides a Kafka Consumer designed to receive JSON formatted messages from a Kafka topic, process these messages, and store them into a PostgreSQL database. Additionally, it includes a simulation of point of sale transactions, which can be used to publish messages to a Kafka topic. The companion database scripts handle the creation of database tables, insertion of example data, and the restoration of a database from a backup.
 
 ## Dependencies
 
-To run this code successfully, ensure the following dependencies are installed:
+To run this code successfully, the following prerequisites must be met:
 
-- Python 3.x
-- kafka-python (`pip install kafka-python`)
-- SQLAlchemy (`pip install SQLAlchemy`)
-- psycopg2 or psycopg2-binary (`pip install psycopg2-binary`)
-- python-dotenv (`pip install python-dotenv`)
-- Ensure Kafka and Zookeeper are installed and properly configured.
+- Kafka: The Kafka Consumer requires a running Apache Kafka environment.
+- Python Libraries:
+  - `kafka-python`: To interact with Kafka.
+  - `SQLAlchemy`: For object-relational mapping (ORM) and database interaction.
+  - `psycopg2` or `psycopg2-binary`: PostgreSQL adapter for Python.
+  - `python-dotenv`: To manage environment variables.
+- PostgreSQL Database: A PostgreSQL server must be running to store the consumed data.
+- Environment Variables: PostgreSQL credentials (`PG_USERNAME` and `PG_PASSWORD`) must be set.
 
 ## Usage
 
-### Setting Up the Environment
+### Kafka Consumer
 
-First, you must have a Kafka and Zookeeper instance running. To help in setting up Kafka, you can use the included `setup_kafka.py` script, which downloads and extracts Kafka, then starts both the Kafka server and Zookeeper.
+Run the consumer script to start consuming messages from a specified Kafka topic. Before running, ensure Kafka is running and available.
 
-For the database, a PostgreSQL instance must be set up, and the schema should be created as defined in `database.py`. You can use the `restore_database.py` script to restore the database from a backup if needed.
-
-Ensure that you have a `.env` file with PostgreSQL credentials set up:
-
-```
-PG_USERNAME=your_username
-PG_PASSWORD=your_password
+```python
+consumer = KafkaConsumer(TOPIC, bootstrap_servers='localhost:9092', value_deserializer=lambda v: json.loads(v.decode('utf-8')))
 ```
 
-### Starting the Consumer
+The above line initiates the Kafka consumer, connecting to the localhost on port 9092.
 
-To start consuming messages from the Kafka topic, run the consumer script:
+To run the consumer:
 
 ```python
 python consumer.py
 ```
 
-This script will listen to the Kafka topic `PointOfSale` and process incoming messages by updating the transaction, items purchased, and date tables in the PostgreSQL database.
+The consumer listens for new messages and processes them by calling update functions with the received JSON data.
 
-### Running the POS Simulator
+### Database Management
 
-The point of sale (POS) simulator can be used to generate and send messages to the configured Kafka topic. 
+Run the `database.py` script to manage the database tables and data. It defines ORM classes for the database structure and provides various update functions to interact with the database.
+
+Ensure environmental variables for PostgreSQL credentials are set, then instantiate the database schema:
+
+```python
+Base.metadata.create_all(engine)
+```
+
+You can also insert initial values into the tables or run predefined updates with the example data provided.
+
+To run the script in interactive mode:
+
+```python
+python -i database.py
+```
+
+### Point of Sale Simulator
+
+The `point_of_sale_simulator.py` script simulates point of sale transactions and can send them as messages to a Kafka topic.
+
+```python
+message = transaction_generator()  # Generates a mock transaction
+# producer.send(TOPIC, message)   # Uncomment to send the message to the Kafka topic
+```
+
+To run the simulation:
 
 ```python
 python point_of_sale_simulator.py
 ```
 
-This will generate transaction data, simulate customer behavior, and push these transactions to Kafka, where they can be consumed by the consumer script.
+### Database Restoration
 
-### Interacting with the Database
-
-The `database.py` contains the ORM definitions for the database tables and several functions to update those tables. You can interact with the database using these functions or extend the functionality as per your requirements.
-
-## Design Decisions and Patterns
-
-- The project's codebase uses the **ORM (Object-Relational Mapping)** pattern via SQLAlchemy to abstract database interactions, making it more maintainable and portable.
-- A **decoupled architecture** is used where the producer and consumer operate independently, which allows for scalability and fault tolerance.
-- **Environment variable** usage for database credentials promotes security and flexibility for different deployment environments.
-
-## Known Issues and Future Improvements
-
-- The `database.py` file contains `TODO` comments mentioning that a database connection needs to be established and dimension tables for product, location, customer, and date need to be implemented.
-- The transaction generator currently has a fixed set of possible customers and items that can be randomly selected. Real-world scenarios would involve a dynamic and potentially much larger set of options.
-- The Kafka Producer instance creation is currently commented out; it should be activated and configured correctly to produce messages to the Kafka topic.
-- Error handling and retry mechanisms may need to be improved for more robust production use.
-
-## Code Examples
-
-Example for updating transaction table after consuming a Kafka message:
+If you need to restore the database from a backup, use the `restore_database.py` script:
 
 ```python
-# Assuming `received_dict` is the dictionary received from the Kafka topic `PointOfSale`
-update_transaction_table(data=received_dict)
+python restore_database.py
 ```
 
-Starting the Kafka consumer and waiting for messages on the topic `PointOfSale`:
+### Kafka Setup
+
+The `setup_kafka.py` script can be used to download, extract, and start a Kafka instance along with Zookeeper:
 
 ```python
-consumer = KafkaConsumer(TOPIC, bootstrap_servers='localhost:9092', value_deserializer=lambda v: json.loads(v.decode('utf-8')))
-for message in consumer:
-    process_message(message.value)
+python setup_kafka.py
 ```
 
-Persistently updating the database with SQLAlchemy:
+## Configuration
 
-```python
-session.add(NewRow(...))
-session.commit()
-```
+To customize the behavior of the code, update the following configurations as necessary:
 
-## Conclusion
+- Kafka topic name (`TOPIC`)
+- Kafka bootstrap servers
+- PostgreSQL connection string (`engine = create_engine(...)`)
+- Path to `.env` file for environment variables
+- Set up initial data by modifying and using the `example_data.py` script
 
-The Point of Sale Data Processing System provided in these scripts demonstrates the integration of a Kafka message broker with a database backend, simulating a realistic data flow scenario in retail transactions. The code is modular and designed for easy expansion and customization to suit varied end-use cases in transaction processing.
+## Key Design Decisions and Patterns
+
+- Use of ORM (SQLAlchemy) to abstract and interact with the database more efficiently.
+- Decoupled architecture separating the consumer, database operations, and simulation logic.
+- Usage of environment variables for sensitive credential management.
+
+## Improvements
+
+- **Staging database:** Implementing a staging database for the consumer could provide a safer environment for data validation and transformation before updating production databases.
+- **Data warehouse:** Transitioning the databases to a data warehouse architecture would help organize the tables into Fact and Dimension categories, enhancing analytics capabilities.
+- **ETL:** Establishing ETL (Extract, Transform, Load) processes for regular and automated data movement from transactional systems to the data warehouse.
+
+## Known Limitations and Future Work
+
+- **Kafka security:** Security configurations for Kafka (SSL/TLS, SASL authentication) are not implemented.
+- **Database normalization:** The database schema may need further normalization to prevent data redundancy.
+- **Error handling:** More robust error handling and logging could be added across different parts of the application.
+- **Scaling:** The consumer is not currently set up to scale horizontally. Consumer groups may be needed for larger workloads.
+
+For future improvements, attention should be given to scaling the Kafka consumer, enhancing database performance, and implementing additional features such as monitoring and alerting.
