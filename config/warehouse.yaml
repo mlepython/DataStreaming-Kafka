@@ -1,6 +1,0 @@
-# warehouse_config.yaml
-warehouse_db:
-  host: localhost:5432
-  database: 'salesdata'
-  user: your_warehouse_db_user
-  password: your_warehouse_db_password

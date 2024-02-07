@@ -2,3 +2,6 @@ venv
 .env
 kafka_2.12-2.8.0
 kafka.tgz
+
+config/staging_config.yaml
+config/warehouse_config.yaml
