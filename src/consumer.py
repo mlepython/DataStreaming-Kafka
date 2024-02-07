@@ -1,6 +1,6 @@
 from kafka import KafkaConsumer
 import json
-from database import update_transaction_table, updated_items_purchased_table, update_date_table
+from data_warehouse.database import update_transaction_table, updated_items_purchased_table, update_date_table
 TOPIC = "PointOfSale"
 print('Connecting to Kafka')
 # consumer = KafkaConsumer(TOPIC)

@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base, relationship, joinedl
 import datetime
 from dotenv import load_dotenv
 import os
-from example_data import *
+from data.example_data import *
 
 load_dotenv()
 

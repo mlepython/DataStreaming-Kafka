@@ -3,8 +3,8 @@ import json
 import time
 import uuid
 from datetime import datetime, timedelta
-from example_data import *
-from database import engine, TaxRate, session
+from data.example_data import *
+from data_warehouse.database import engine, TaxRate, session
 # from kafka import KafkaProducer
 # producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 # producer = KafkaProducer(bootstrap_servers='localhost:9092')
