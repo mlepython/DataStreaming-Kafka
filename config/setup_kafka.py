@@ -18,13 +18,13 @@ if not os.path.exists(download_path):
     with tarfile.open(download_path, "r:gz") as tar:
         tar.extractall()
 
-# Change to Kafka directory
-kafka_dir = f"kafka_{scala_version}-{kafka_version}"
-# os.chdir(kafka_dir)
-zookeeper = os.getcwd()+f"\{kafka_dir}\\bin\zookeeper-server-start.sh"
-print(zookeeper)
-# Start Zookeeper
-subprocess.run(['bash', zookeeper, "config/zookeeper.properties"])
+# # Change to Kafka directory
+# kafka_dir = f"kafka_{scala_version}-{kafka_version}"
+# # os.chdir(kafka_dir)
+# zookeeper = os.getcwd()+f"\{kafka_dir}\\bin\zookeeper-server-start.sh"
+# print(zookeeper)
+# # Start Zookeeper
+# subprocess.run(['bash', zookeeper, "config/zookeeper.properties"])
 
 # Start Kafka server
 # subprocess.run(["wsl", "bin/kafka-server-start.sh", "config/server.properties"])

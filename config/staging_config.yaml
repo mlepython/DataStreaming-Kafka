@@ -2,5 +2,3 @@
 staging_db:
   host: localhost:27017
   database: Testing
-  user: 
-  password: 

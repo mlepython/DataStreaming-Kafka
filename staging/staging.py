@@ -16,17 +16,26 @@ database = config['staging_db']['database']
 client = MongoClient(f"mongodb://{host}/")
 db = client[database]
 
-# Access a collection within the database
-collection = db["mycollection"]
+def update_collection(data: dict):
+    collection = db[data['location']['store_id']]
+    result = collection.insert_one(data.pop('location'))
+    print(f"Inserted document with ID: {result.inserted_id}") 
 
-# Insert a document into the collection
-document = {"name": "John Doe", "age": 30, "city": "New York"}
-result = collection.insert_one(document)
+def get_collection(store_id: str):
+    collection = db[store_id]
+    
+# # Access a collection within the database
+# collection = db["mycollection"]
+# collection = db['new_collection']
 
-print(f"Inserted document with ID: {result.inserted_id}")
-# Find documents in the collection
-query = {"city": "New York"}
-results = collection.find(query)
+# # Insert a document into the collection
+# document = {"name": "John Doe", "age": 30, "city": "New York"}
+# result = collection.insert_one(document)
 
-for result in results:
-    print(result)
+# print(f"Inserted document with ID: {result.inserted_id}")
+# # Find documents in the collection
+# query = {"city": "New York"}
+# results = collection.find(query)
+
+# for result in results:
+#     print(result)
