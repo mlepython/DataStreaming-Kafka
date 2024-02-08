@@ -99,8 +99,9 @@ def transaction_generator():
     print(pos)
     return pos
 
-for i in range(1):
-    message = transaction_generator()
-    # producer.send(TOPIC, message)
-    time.sleep(random.random()*2)
+if __name__ == "__main__":
+    for i in range(1):
+        message = transaction_generator()
+        # producer.send(TOPIC, message)
+        time.sleep(random.random()*2)
 
