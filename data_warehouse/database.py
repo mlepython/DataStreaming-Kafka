@@ -9,7 +9,7 @@ import os
 from pathlib import Path
 from data.example_data import *
 
-load_dotenv(dotenv_path=__file__.parent/".env")
+load_dotenv(dotenv_path=Path(__file__).parent/".env")
 
 Base = declarative_base()
 
