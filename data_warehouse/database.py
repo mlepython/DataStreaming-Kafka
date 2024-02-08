@@ -6,9 +6,10 @@ from sqlalchemy.orm import sessionmaker, declarative_base, relationship, joinedl
 import datetime
 from dotenv import load_dotenv
 import os
+from pathlib import Path
 from data.example_data import *
 
-load_dotenv()
+load_dotenv(dotenv_path=__file__.parent/".env")
 
 Base = declarative_base()
 
