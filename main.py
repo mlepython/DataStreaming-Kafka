@@ -1,3 +1,3 @@
-import staging.staging
+import staging
 
 update_collection(data=data)

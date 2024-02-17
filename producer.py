@@ -4,9 +4,9 @@ import time
 import uuid
 from datetime import datetime, timedelta
 from data.example_data import *
-from data_warehouse.database import engine, TaxRate, session
-# from kafka import KafkaProducer
-# producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+from database import engine, TaxRate, session
+from kafka import KafkaProducer
+producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 # producer = KafkaProducer(bootstrap_servers='localhost:9092')
 
 NUM_ITEMS = len(items)
@@ -90,7 +90,7 @@ def transaction_generator():
 
     pos = {"transaction_id": transaction_id,
         "transaction_date": transaction_date}
-    pos.update(customer)
+    pos['customer'] = customer
     pos['items'] = items_purchased
     pos.update(cost)
     pos['payment_type'] = payment_type['type']
@@ -100,8 +100,8 @@ def transaction_generator():
     return pos
 
 if __name__ == "__main__":
-    for i in range(1):
+    for i in range(100):
         message = transaction_generator()
-        # producer.send(TOPIC, message)
-        time.sleep(random.random()*2)
+        producer.send(TOPIC, message)
+        # time.sleep(random.random()*0.1)
 
