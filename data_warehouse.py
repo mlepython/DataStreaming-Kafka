@@ -19,27 +19,29 @@ database_name = 'salesdata'
 
 
 class Transaction(Base):
-    __tablename__ = 'transactions'
+    __tablename__ = 'transactions_FACT'
     id = Column(Integer, primary_key=True)
     transaction_id = Column(String, unique=True)
     timestamp = Column(DateTime, default=datetime.datetime.utcnow)
     subtotal = Column(Float, unique=False)
     tax = Column(Float, unique=False)
     total = Column(Float, unique=False)
-    customer_id = Column(String, ForeignKey('customer.customer_id'))
-    customer = relationship('Customer', back_populates='transactions')
-    store_id = Column(String, ForeignKey('store.store_id'))
-    store = relationship('Store', back_populates='transactions')
-    payment_id = Column(Integer, ForeignKey('payment_options.id'))
-    payment_option = relationship('PaymentOptions', back_populates='transaction')
-    items_purchased = relationship('ItemsPurchased', back_populates='transaction')    
-    date_id = Column(Integer, ForeignKey('date.id'))
+
+    customer_id = Column(String, ForeignKey('customer_DIM.customer_id'))
+    store_id = Column(String, ForeignKey('store_DIM.store_id'))
+    payment_id = Column(Integer, ForeignKey('payment_options_DIM.id'))
+    date_id = Column(Integer, ForeignKey('date_DIM.id'))
+
     date = relationship('Date', back_populates='transaction')
+    customer = relationship('Customer', back_populates='transactions')
+    store = relationship('Store', back_populates='transactions')
+    payment_option = relationship('PaymentOptions', back_populates='transaction')
+    items_purchased = relationship('ItemsPurchased', back_populates='transaction')
 
 class ItemsPurchased(Base):
     __tablename__ = 'items_purchased'
     id = Column(Integer, primary_key=True)
-    transaction_id = Column(String, ForeignKey('transactions.transaction_id'))
+    transaction_id = Column(String, ForeignKey('transactions_FACT.transaction_id'))
     quantity = Column(Integer, unique=False)
     price = Column(Float, unique=False)
     product_id = Column(String, ForeignKey('inventory.product_id'))
@@ -57,7 +59,7 @@ class Inventory(Base):
     item_purchased = relationship('ItemsPurchased', back_populates='product')
 
 class Date(Base):
-    __tablename__ = 'date'
+    __tablename__ = 'date_DIM'
     # date dimension table
     id = Column(Integer, primary_key=True)
     day = Column(Integer, unique=False)
@@ -71,7 +73,7 @@ class Date(Base):
     transaction = relationship('Transaction', back_populates='date')
 
 class Store(Base):
-    __tablename__ = 'store'
+    __tablename__ = 'store_DIM'
     id = Column(Integer, primary_key=True)
     store_id = Column(String, unique=True)
     name = Column(String, unique=False)
@@ -82,7 +84,7 @@ class Store(Base):
     transactions = relationship('Transaction', back_populates='store')
     
 class PaymentOptions(Base):
-    __tablename__ = 'payment_options'
+    __tablename__ = 'payment_options_DIM'
     id = Column(Integer, primary_key=True)
     type = Column(String, unique=True)
     description = Column(String, unique=False)
@@ -95,7 +97,7 @@ class TaxRate(Base):
     rate = Column(Float, unique=False)
 
 class Customer(Base):
-    __tablename__ = 'customer'
+    __tablename__ = 'customer_DIM'
     id = Column(Integer, primary_key=True)
     customer_id = Column(String, unique=True)
     first_name = Column(String, unique=False)

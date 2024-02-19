@@ -53,6 +53,16 @@ def customer_collection(data: dict):
     result = collection.insert_one(new_data)
     print(f"Inserted document with ID: {result.inserted_id}")
 
+def get__all_transactions():
+    collection = db['Transactions']
+    results = collection.find()
+    return results
+
+def get_all_unique_documents(collection="", field=""):
+    collection = db[collection]
+    distinct_values = collection.distinct(field)
+    return distinct_values
+
 def query_transaction_id(collection="", field="", id=""):
     collection = db[collection]
     query = {'transaction_id': id}
@@ -77,7 +87,7 @@ def get_customer(store_id: str):
     for customer in distinct_values:
         print("Customer:", customer['customer_id'])
     
-    
+
 if __name__=='__main__':
     # drop_collection(store_id='STORE005')
     # get_results(store_id='STORE005')
