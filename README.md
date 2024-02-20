@@ -1,101 +1,66 @@
-# Kafka Point-of-Sale Data Processing README
+# Kafka Consumer for Point of Sale System
 
 ## Overview
-
-This codebase is designed to simulate a Point-of-Sale (POS) system, specifically focusing on the generation, consumption, and storage of sales transaction data. The provided Python scripts work together to:
-
-- Simulate POS transactions (`point_of_sale_simulator.py`)
-- Send generated transactions to a Kafka topic
-- Consume messages from a Kafka topic (`consumer.py`)
-- Update a PostgreSQL database with the received transaction data (`database.py`)
+This codebase comprises a set of Python scripts designed to ingest transactional data from a Kafka topic named "PointOfSale", process and store it in different databases, stage the data for transformation, and finally, integrate into a data warehouse. It includes a Kafka consumer, database operations, data staging, and a transaction producer for simulating point of sale data.
 
 ## Dependencies
-
 - Python 3.x
-- Kafka (installation and CLI tools)
-- SQLAlachemy for ORM
-- PostgreSQL database
-- python-dotenv for environment variable management
-- Additional Python libraries: json, datetime, os, uuid
+- Kafka (including Zookeeper)
+- MongoDB
+- PostgreSQL
+- SQLAlchemy
+- Python-dotenv
+- PyMongo
+- Kafka-Python library
 
-## Installation
+## Usage
 
-Ensure Python 3.x and PostgreSQL are installed on your system.
+### Kafka Consumer (`consumer.py`)
+The Kafka consumer script is responsible for consuming messages from the Kafka "PointOfSale" topic, processing the received data and inserting it into a staging area, and then updating several collections, potentially for further ETL processes.
 
-Install required Python packages using:
+To run the consumer script, use the following command:
+
 ```bash
-pip install kafka-python sqlalchemy psycopg2 python-dotenv
+python consumer.py
 ```
 
-For Kafka setup and usage follow the official documentation at: https://kafka.apache.org/documentation/
+### Database Operations (`database.py`)
+This script defines the database schema using SQLAlchemy ORM and provides functions to interact with the PostgreSQL database. It includes transactional tables, inventory, and customer data models.
 
-Set up environment variables for your PostgreSQL connection in a `.env` file with the following entries:
-```
-PG_USERNAME=your_username
-PG_PASSWORD=your_password
-```
+In addition to creating the schema, it also provides functions to update the transaction, items purchased, and date tables. Before running this script, ensure you have set the correct environment variables for the PostgreSQL database credentials.
 
-## Using the Code
+### Data Staging (`staging.py`)
+The staging script contains functions to interact with the MongoDB collections, which store transactional data temporarily before it's processed into the data warehouse. It connects to MongoDB, inserts documents, and retrieves data by transactions for further processing.
 
-### Producer Script: Point-of-Sale Simulator
+### Main Processing (`main.py`)
+The main script coordinates the process of transforming and loading data from the staging area into the actual data warehouse.
 
-The `point_of_sale_simulator.py` file simulates POS transaction events. Run the script to generate and send transaction data to a Kafka topic. Ensure Kafka server and Zookeeper are running.
+### Transaction Producer (`producer.py`)
+This script simulates a stream of transaction data and sends it to the Kafka "PointOfSale" topic. It generates random transaction entries and serializes them into JSON format before sending them through Kafka.
 
-### Consumer Script
+To simulate transaction data, run the following command:
 
-The `consumer.py` file acts as a Kafka consumer which listens to a specified Kafka topic. Upon receiving messages, it processes the data and updates the respective database tables. Ensure you have modified the database credentials and have the correct Kafka topic and broker specified.
-
-### Database Script
-
-The `database.py` file contains all the SQLAlchemy ORM classes for the database tables, database connection setup, and functions to update each table. It also contains the execution code to populate the database with initial data from `example_data.py`.
-
-### Initial Data and Restoration
-
-The `example_data.py` script provides example data for simulation purposes. To restore the database to a previous state, use the `restore_database.py` script.
-
-## Code Examples
-
-### Consuming Messages
-
-To consume messages from the Kafka queue, ensure the Kafka server is up and running. Then, execute the `consumer.py` script:
-
-```python
-# Start consuming messages from Kafka topic
-for message in consumer:
-    received_dict = message.value
-    update_transaction_table(data=received_dict)
-    updated_items_purchased_table(data=received_dict)
-    update_date_table(data=received_dict)
+```bash
+python producer.py
 ```
 
-### Updating Database Tables
+### Store Inventory Database (`store_inventory_db.py`)
+This script sets up a PostgreSQL database to manage the inventory for multiple stores. It creates an inventory table and inserts items for each store.
 
-To update the `transactions` table with new data:
-
-```python
-def update_transaction_table(data):
-    # Function body here...
-    session.commit()
-```
+### Setup Kafka (`setup_kafka.py`)
+Contains instructions for downloading and setting up Apache Kafka and Zookeeper on your local machine.
 
 ## Configuration
+The codebase includes configurations for Kafka, MongoDB, and PostgreSQL databases. Before running any scripts, you must set up the `.env` file with the correct database credentials for PostgreSQL, and `staging_config.yaml` for MongoDB connection details.
 
-Make sure the Kafka bootstrap server address and topic name in both the producer and the consumer match. Modify `TOPIC` and `bootstrap_servers` as needed.
+## Design Decisions
+- Kafka for real-time data streaming.
+- SQLAlchemy ORM for database interaction abstraction.
+- MongoDB for staging the data allows for flexible schema and easy integration with other systems.
+- PostgreSQL for structured and relational data storage.
 
-## Design Decisions and Patterns
-
-- Used ORM (SQLAlchemy) for database interactions to simplify code and improve maintainability.
-- Used Kafka for message queuing and processing to allow for real-time data streaming and scalable architecture.
-- Adopted the Environmental Variables pattern for managing sensitive configuration such as database credentials.
-
-## Known Issues and Limitations
-
-The current database structure operates as an operational database. There is no separation between staging, operational, and analytical databases.
-
-## Future Improvements
-
-- **Staging Database**: Implement a staging area to hold raw data from Kafka before cleaning and transforming it for operational or analytical purposes. This can be achieved by creating a separate schema or database that temporarily stores incoming data.
-- **Data Warehouse**: Transition the current database to serve as an OLTP (Online Transaction Processing) system and create a separate OLAP (Online Analytical Processing) data warehouse. Tables can be structured into fact and dimension tables to support complex analytical queries.
-- **ETL Process**: Establish an ETL (Extract, Transform, Load) pipeline to move data from the staging area to both the operational database and the data warehouse, ensuring data is properly transformed and suitable for both transactional operations and analytics.
-
-To implement these changes, additional scripts and database schemas would have to be developed, requiring a solid understanding of business logic and data modeling best practices. Tools like Apache Airflow for scheduling ETL jobs, or services such as AWS Glue, could be considered to manage the ETL workflows effectively.
+## Future Improvements and How to Implement Them
+- Implement a staging database that temporarily holds data for processing: Introduce an intermediate relational database dedicated to staging data before it is transformed and stored in the data warehouse.
+- Set up a data warehouse: Design a schema with Fact and Dimension tables to support OLAP operations and better analytics. Creating a Star or Snowflake schema can allow for more complex queries and reports.
+- Develop ETL (Extract, Transform, Load) processes: Create a series of scripts or use an ETL framework to automate the transformation and loading of data from the staging database into the data warehouse. This might include data cleaning, normalization, and denormalization steps.
+- Use a workflow management tool such as Apache Airflow to orchestrate the ETL pipelines, ensuring that data is accurately transferred at scheduled intervals and dependencies are managed effectively.

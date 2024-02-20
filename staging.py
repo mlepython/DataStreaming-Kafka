@@ -67,13 +67,15 @@ def query_transaction_id(collection="", field="", id=""):
     collection = db[collection]
     query = {'transaction_id': id}
     results = collection.find_one(query)
-    return results[field]
+    if results:
+        return results[field]
+    else:
+        return None
 
-# def get_results(store_id: str):
-#     collection = db[store_id]
-#     query = {"city": "New York"}
-#     results = collection.find(query)
-#     print(results)
+def drop_document(collection="", id=""):
+    collection = db[collection]
+    query = {'transaction_id': id}
+    collection.delete_one(query)
 
 def drop_collection(store_id: str):
     collection = db[store_id]
@@ -86,12 +88,19 @@ def get_customer(store_id: str):
     distinct_values = collection.distinct(field)
     for customer in distinct_values:
         print("Customer:", customer['customer_id'])
-    
+
+def total_documents():
+    collection = db['Transactions']
+    return collection.count_documents({})
 
 if __name__=='__main__':
     # drop_collection(store_id='STORE005')
     # get_results(store_id='STORE005')
     # get_customer(store_id='STORE001')
+    results = query_transaction_id(collection='Customer', field='customer',
+                         id='4adf49f0-2e2d-4625-88b4-3b4097c09a35')
+    drop_document(collection='Customer',
+                  id='4adf49f0-2e2d-4625-88b4-3b4097c09a35')
     results = query_transaction_id(collection='Customer', field='customer',
                          id='4adf49f0-2e2d-4625-88b4-3b4097c09a35')
     print(results)

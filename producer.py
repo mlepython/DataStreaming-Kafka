@@ -100,8 +100,8 @@ def transaction_generator():
     return pos
 
 if __name__ == "__main__":
-    for i in range(100):
+    for i in range(1000):
         message = transaction_generator()
         producer.send(TOPIC, message)
-        # time.sleep(random.random()*0.1)
+        time.sleep(random.random()*0.5)
 
