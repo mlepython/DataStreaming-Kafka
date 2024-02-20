@@ -39,7 +39,7 @@ class Transaction(Base):
     items_purchased = relationship('ItemsPurchased', back_populates='transaction')
 
 class ItemsPurchased(Base):
-    __tablename__ = 'items_purchased'
+    __tablename__ = 'items_purchased_FACT'
     id = Column(Integer, primary_key=True)
     transaction_id = Column(String, ForeignKey('transactions_FACT.transaction_id'))
     quantity = Column(Integer, unique=False)
@@ -109,23 +109,45 @@ class Customer(Base):
     postal_code = Column(String, unique=False)
     transactions = relationship('Transaction', back_populates='customer')
 
-def update_transaction_table(data):
-    payment_entry = session.query(PaymentOptions).filter_by(type=data['payment_type']).first()
-    if payment_entry:
-        payment_id = payment_entry.id
-    else:
-        payment_id = None
-    session.add(Transaction(
-            transaction_id=data['transaction_id'],
-            timestamp=data['transaction_date'],
-            subtotal=data['subtotal'],
-            tax=data['tax'],
-            total=data['total'],
-            customer_id=data['customer_id'],
-            store_id=data['location']['store_id'],
-            payment_id=payment_id
+def update_customer_table(data):
+    # check to see if customer already in table
+    customer_entry = session.query(Customer).filter_by(customer_id=data['customer_id']).first()
+    if not customer_entry:
+        session.add(Customer(
+            **data
         ))
-    session.commit()
+        session.commit()
+        print("New customer added to warehouse")
+
+def update_store_table(data):
+    # check to see if store location already in table
+    store_entry = session.query(Store).filter_by(store_id=data['store_id']).first()
+    if not store_entry:
+        session.add(Store(
+            **data
+        ))
+        session.commit()
+        print("New store added to warehouse")
+
+def update_transaction_table(data, customer_id, store_id):
+    transaction_entry = session.query(Transaction).filter_by(transaction_id=data['transaction_id']).first()
+    if not transaction_entry:
+        payment_entry = session.query(PaymentOptions).filter_by(type=data['payment_type']).first()
+        if payment_entry:
+            payment_id = payment_entry.id
+        else:
+            payment_id = None
+        session.add(Transaction(
+                transaction_id=data['transaction_id'],
+                timestamp=data['transaction_date'],
+                subtotal=data['subtotal'],
+                tax=data['tax'],
+                total=data['total'],
+                customer_id=customer_id,
+                store_id=store_id,
+                payment_id=payment_id
+            ))
+        session.commit()
 
 def update_date_table(data):
     datetime_object = datetime.datetime.strptime(data['transaction_date'], "%Y-%m-%d %H:%M:%S")
@@ -151,8 +173,8 @@ def update_date_table(data):
     else:
         print("record not found")
 
-def updated_items_purchased_table(data):
-    for item in data['items']:
+def updated_items_purchased_table(data, transaction_id):
+    for item in data:
         inventory_item = session.query(Inventory).filter_by(product=item['item']).first()
         if inventory_item:
             product_id = inventory_item.product_id
@@ -160,12 +182,13 @@ def updated_items_purchased_table(data):
             print('Product Not Found')
             product_id = None
         session.add(ItemsPurchased(
-            transaction_id=data['transaction_id'],
+            transaction_id=transaction_id,
             quantity=item['quantity'],
             price=item['price'],
             product_id=product_id,
         ))
     session.commit()
+    print('New item added to table')
     
 
 engine = create_engine(f'postgresql://{username}:{password}@localhost:5432/{database_name}')
@@ -174,8 +197,7 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-if __name__=='__main__':
-    
+if __name__=='__main__':  
     try:
         for province, rate in canadian_tax_rates.items():
             session.add(TaxRate(province=province, rate=rate))

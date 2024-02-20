@@ -53,7 +53,7 @@ def customer_collection(data: dict):
     result = collection.insert_one(new_data)
     print(f"Inserted document with ID: {result.inserted_id}")
 
-def get__all_transactions():
+def get_all_transactions():
     collection = db['Transactions']
     results = collection.find()
     return results
@@ -69,11 +69,11 @@ def query_transaction_id(collection="", field="", id=""):
     results = collection.find_one(query)
     return results[field]
 
-def get_results(store_id: str):
-    collection = db[store_id]
-    query = {"city": "New York"}
-    results = collection.find(query)
-    print(results)
+# def get_results(store_id: str):
+#     collection = db[store_id]
+#     query = {"city": "New York"}
+#     results = collection.find(query)
+#     print(results)
 
 def drop_collection(store_id: str):
     collection = db[store_id]
