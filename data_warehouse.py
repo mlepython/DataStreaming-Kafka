@@ -1,5 +1,3 @@
-# TODO modify the current databases into a data warehouse labeling tables as Fact and Dim
-# TODO create data mart?
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, MetaData, text, Float, exc, ForeignKey
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship, joinedload
 import datetime
