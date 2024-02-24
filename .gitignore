@@ -5,3 +5,5 @@ kafka.tgz
 
 config/staging_config.yaml
 config/warehouse_config.yaml
+
+__pycache__
