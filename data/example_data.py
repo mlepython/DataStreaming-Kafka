@@ -1,7 +1,10 @@
 import json
 from random import randint
+from pathlib import Path
 
 def read_json(file_path):
+    # file_path = Path(file_path).resolve()
+    file_path =  Path(__file__).parent.parent/file_path
     with open(file_path, 'r') as file:
         data = json.load(file)
     return data

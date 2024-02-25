@@ -149,22 +149,26 @@ def update_transaction_table(data, customer_id, store_id):
 
 def update_date_table(data):
     datetime_object = datetime.datetime.strptime(data['transaction_date'], "%Y-%m-%d %H:%M:%S")
-    session.add(Date(
-        day=datetime_object.day,
-        weekday_name= datetime_object.strftime("%A"),
-        weekday=datetime_object.weekday(),
-        month=datetime_object.month,
-        month_name=datetime_object.strftime("%B"),
-        quarter=(datetime_object.month-1) // 3 + 1,
-        quarter_name=f'Q{(datetime_object.month-1) // 3 + 1}',
-        year=datetime_object.year
-    ))
-    session.commit()
+    date_data = {
+        "day": datetime_object.day,
+        "weekday_name": datetime_object.strftime("%A"),
+        "weekday": datetime_object.weekday(),
+        "month": datetime_object.month,
+        "month_name": datetime_object.strftime("%B"),
+        "quarter": (datetime_object.month-1) // 3 + 1,
+        "quarter_name": f'Q{(datetime_object.month-1) // 3 + 1}',
+        "year": datetime_object.year
+    }
+    date_entry = session.query(Date).filter_by(
+        day=date_data['day'], month=date_data['month'], year=date_data['year']
+    ).first()
+    if not date_entry:
+        # add new entry to date table if record does not exist
+        session.add(Date(**date_data))
+        session.commit()
     # add the date id to the transaction table
     transaction_entry = session.query(Transaction).filter_by(timestamp=data['transaction_date']).first()
-    date_entry = session.query(Date).filter_by(
-        day=datetime_object.day, month=datetime_object.month, year=datetime_object.year
-    ).first()
+
     if transaction_entry and date_entry:
         transaction_entry.date_id = date_entry.id 
         session.commit()

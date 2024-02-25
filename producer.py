@@ -96,7 +96,7 @@ def transaction_generator():
     pos['payment_type'] = payment_type['type']
     pos['location'] = store
 
-    print(pos)
+    print(f"New Transactions: {transaction_id}")
     return pos
 
 if __name__ == "__main__":
