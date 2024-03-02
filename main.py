@@ -18,6 +18,9 @@ def transfer_from_mongo_to_warehouse():
         # for result in results:
         #     print(result)
         if customer and location and items:
+            # add date to date table
+            data_warehouse.update_date_table(data=transaction)
+            # update transaction fact table
             data_warehouse.update_transaction_table(data=transaction,
                                                     customer_id=customer['customer_id'],
                                                     store_id=location['store_id'])
@@ -26,8 +29,7 @@ def transfer_from_mongo_to_warehouse():
             data_warehouse.update_customer_table(data=customer)
             # check to see if store location is in data warehouse if not update warehouse
             data_warehouse.update_store_table(data=location)
-            # add date to date table
-            data_warehouse.update_date_table(data=transaction)
+
             # once a document has been saved to data warehouse, drop from collection
             staging.drop_document(collection='Customer', id=id)
             staging.drop_document(collection='Location', id=id)

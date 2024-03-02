@@ -111,9 +111,7 @@ def update_customer_table(data):
     # check to see if customer already in table
     customer_entry = session.query(Customer).filter_by(customer_id=data['customer_id']).first()
     if not customer_entry:
-        session.add(Customer(
-            **data
-        ))
+        session.add(Customer(**data))
         session.commit()
         print("New customer added to warehouse")
 
@@ -130,11 +128,21 @@ def update_store_table(data):
 def update_transaction_table(data, customer_id, store_id):
     transaction_entry = session.query(Transaction).filter_by(transaction_id=data['transaction_id']).first()
     if not transaction_entry:
+        # get payment type id
         payment_entry = session.query(PaymentOptions).filter_by(type=data['payment_type']).first()
         if payment_entry:
             payment_id = payment_entry.id
         else:
             payment_id = None
+        # get date id from date dim table
+        datetime_object = datetime.datetime.strptime(data['transaction_date'], "%Y-%m-%d %H:%M:%S")
+        date_entry = session.query(Date).filter_by(day=datetime_object.day,
+                                                   month=datetime_object.month,
+                                                   year=datetime_object.year).first()
+        if date_entry:
+            date_id = date_entry.id
+        else:
+            date_id = None
         session.add(Transaction(
                 transaction_id=data['transaction_id'],
                 timestamp=data['transaction_date'],
@@ -143,7 +151,8 @@ def update_transaction_table(data, customer_id, store_id):
                 total=data['total'],
                 customer_id=customer_id,
                 store_id=store_id,
-                payment_id=payment_id
+                payment_id=payment_id,
+                date_id=date_id
             ))
         session.commit()
 
@@ -159,6 +168,7 @@ def update_date_table(data):
         "quarter_name": f'Q{(datetime_object.month-1) // 3 + 1}',
         "year": datetime_object.year
     }
+    # check if date is already in date dim table. if not add a new record
     date_entry = session.query(Date).filter_by(
         day=date_data['day'], month=date_data['month'], year=date_data['year']
     ).first()
@@ -166,14 +176,6 @@ def update_date_table(data):
         # add new entry to date table if record does not exist
         session.add(Date(**date_data))
         session.commit()
-    # add the date id to the transaction table
-    transaction_entry = session.query(Transaction).filter_by(timestamp=data['transaction_date']).first()
-
-    if transaction_entry and date_entry:
-        transaction_entry.date_id = date_entry.id 
-        session.commit()
-    else:
-        print("record not found")
 
 def updated_items_purchased_table(data, transaction_id):
     for item in data:
@@ -234,7 +236,7 @@ if __name__=='__main__':
     # update_transaction_table(data=pos_example_3)
     # update_date_table(data=pos_example_3)
     
-    update_transaction_table(data=pos_example_2)
+    # update_transaction_table(data=pos_example_2)
     update_date_table(data=pos_example_2)
     # result = session.query(Transaction).options(joinedload(Transaction.customer)).first()
     # for attr, value in result.__dict__.items():

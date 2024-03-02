@@ -54,8 +54,8 @@ def transaction_generator():
     # generate a random id for transaction id
     transaction_id = str(uuid.uuid4())
     # get the current date and time for transaction date
-    # transaction_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    transaction_date = generate_random_timestamp()
+    transaction_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # transaction_date = generate_random_timestamp()
 
     # randomly select items, payment type, store, and customer id for a given transaction
     items_purchased = random.sample(items, k=random.randint(3,NUM_ITEMS))
@@ -103,5 +103,5 @@ if __name__ == "__main__":
     for i in range(1000):
         message = transaction_generator()
         producer.send(TOPIC, message)
-        time.sleep(random.random()*0.1)
+        time.sleep(random.random()*0.01)
 
